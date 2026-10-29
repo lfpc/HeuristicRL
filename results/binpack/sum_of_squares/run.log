@@ -1,0 +1,119 @@
+       best_fit: waste 9.68 %
+ sum_of_squares: waste 2.36 %
+         random: waste 13.56 %
+Training 30 runs on 8 workers ...
+          scratch seed 0: final waste 1.78 %
+          scratch seed 4: final waste 1.91 %
+          scratch seed 3: final waste 4.12 %
+          scratch seed 1: final waste 2.18 %
+          scratch seed 2: final waste 2.42 %
+           bc_ppo seed 2: final waste 2.43 %
+           bc_ppo seed 1: final waste 1.76 %
+           bc_ppo seed 0: final waste 1.78 %
+           bc_ppo seed 4: final waste 1.70 %
+           bc_ppo seed 3: final waste 2.10 %
+   bc_ppo_kl_fast seed 0: final waste 1.68 %
+        bc_ppo_kl seed 2: final waste 1.46 %
+        bc_ppo_kl seed 4: final waste 1.93 %
+        bc_ppo_kl seed 0: final waste 1.74 %
+        bc_ppo_kl seed 1: final waste 1.74 %
+        bc_ppo_kl seed 3: final waste 1.87 %
+   bc_ppo_kl_fast seed 2: final waste 1.72 %
+   bc_ppo_kl_fast seed 1: final waste 1.77 %
+   bc_ppo_kl_fast seed 3: final waste 1.83 %
+       dagger_ppo seed 0: final waste 1.91 %
+       dagger_ppo seed 2: final waste 1.72 %
+       dagger_ppo seed 1: final waste 1.95 %
+       dagger_ppo seed 3: final waste 1.98 %
+   bc_ppo_kl_fast seed 4: final waste 1.91 %
+       dagger_ppo seed 4: final waste 2.15 %
+    dagger_ppo_kl seed 0: final waste 1.78 %
+    dagger_ppo_kl seed 1: final waste 1.71 %
+    dagger_ppo_kl seed 2: final waste 1.58 %
+    dagger_ppo_kl seed 4: final waste 1.76 %
+    dagger_ppo_kl seed 3: final waste 1.59 %
+{'Best Fit': [10, 10, 10, 11, 10, 11, 10, 12, 10, 6], 'Sum of Squares': [10, 11, 12, 12, 12, 12, 12, 7, 12]}
+# Results
+
+Wasted fraction of opened bin capacity (lower is better), greedy policies on
+256 fixed episodes (B = 12, item sizes {3, 4}, p = {2/3, 1/3}, 200 items).
+
+| Baseline | Waste |
+|---|---|
+| best_fit | 9.68 % ± 0.99 |
+| sum_of_squares | 2.36 % ± 0.66 |
+| random | 13.56 % ± 2.70 |
+
+Warm-started variants clone **Sum of Squares**.
+
+| Variant | Initial waste | Final waste | Worst during training | Steps to beat Best Fit (median) | Seeds beating Best Fit |
+|---|---|---|---|---|---|
+| PPO from scratch | 58.87 % | 2.48 % ± 0.85 | 14.05 % | 655 k | 5/5 |
+| BC → PPO (naive) | 2.49 % | 1.95 % ± 0.28 | 4.92 % | 13 k | 5/5 |
+| BC → PPO + KL (decay 50%) | 2.49 % | 1.75 % ± 0.16 | 2.65 % | 13 k | 5/5 |
+| BC → PPO + KL (decay 20%) | 2.49 % | 1.78 % ± 0.08 | 3.45 % | 13 k | 5/5 |
+| DAgger → PPO (naive) | 2.48 % | 1.94 % ± 0.14 | 5.20 % | 13 k | 5/5 |
+| DAgger → PPO + KL (decay 50%) | 2.48 % | 1.68 % ± 0.09 | 2.58 % | 13 k | 5/5 |
+
+Warm-started variants include the 12,800 Sum of Squares demonstration steps in their step counts.
+
+       best_fit: waste 9.68 %
+ sum_of_squares: waste 2.36 %
+         random: waste 13.56 %
+Reusing 30 runs from /Users/luisfelipe/Documents/Projects/RL_AHD/results_sos/results.json
+Training 25 runs on 8 workers ...
+             hurl seed 1: final waste 2.08 %
+             hurl seed 4: final waste 2.48 %
+             hurl seed 3: final waste 2.07 %
+             hurl seed 0: final waste 1.29 %
+             hurl seed 2: final waste 2.05 %
+          bc_hurl seed 2: final waste 2.32 %
+          bc_hurl seed 1: final waste 2.01 %
+          bc_hurl seed 0: final waste 2.11 %
+          bc_hurl seed 3: final waste 1.95 %
+          bc_hurl seed 4: final waste 1.98 %
+             hepo seed 0: final waste 2.36 %
+             hepo seed 1: final waste 2.46 %
+             hepo seed 3: final waste 2.45 %
+             hepo seed 2: final waste 2.36 %
+             hepo seed 4: final waste 2.36 %
+       iql_ppo_kl seed 0: final waste 1.83 %
+       iql_ppo_kl seed 1: final waste 1.34 %
+       iql_ppo_kl seed 2: final waste 1.27 %
+       iql_ppo_kl seed 3: final waste 1.84 %
+       iql_ppo_kl seed 4: final waste 1.25 %
+      hubl_ppo_kl seed 0: final waste 1.73 %
+      hubl_ppo_kl seed 1: final waste 1.73 %
+      hubl_ppo_kl seed 2: final waste 1.68 %
+      hubl_ppo_kl seed 3: final waste 1.51 %
+      hubl_ppo_kl seed 4: final waste 1.40 %
+{'Best Fit': [10, 10, 10, 11, 10, 11, 10, 12, 10, 6], 'Sum of Squares': [10, 11, 12, 12, 12, 12, 12, 7, 12]}
+# Results
+
+Wasted fraction of opened bin capacity (lower is better), greedy policies on
+256 fixed episodes (B = 12, item sizes {3, 4}, p = {2/3, 1/3}, 200 items).
+
+| Baseline | Waste |
+|---|---|
+| best_fit | 9.68 % ± 0.99 |
+| sum_of_squares | 2.36 % ± 0.66 |
+| random | 13.56 % ± 2.70 |
+
+Warm-started variants clone **Sum of Squares**.
+
+| Variant | Initial waste | Final waste | Worst during training | Steps to beat Best Fit (median) | Seeds beating Best Fit |
+|---|---|---|---|---|---|
+| PPO from scratch | 58.87 % | 2.48 % ± 0.85 | 14.05 % | 655 k | 5/5 |
+| BC → PPO (naive) | 2.49 % | 1.95 % ± 0.28 | 4.92 % | 13 k | 5/5 |
+| BC → PPO + KL (decay 50%) | 2.49 % | 1.75 % ± 0.16 | 2.65 % | 13 k | 5/5 |
+| BC → PPO + KL (decay 20%) | 2.49 % | 1.78 % ± 0.08 | 3.45 % | 13 k | 5/5 |
+| DAgger → PPO (naive) | 2.48 % | 1.94 % ± 0.14 | 5.20 % | 13 k | 5/5 |
+| DAgger → PPO + KL (decay 50%) | 2.48 % | 1.68 % ± 0.09 | 2.58 % | 13 k | 5/5 |
+| HuRL (from scratch) | 58.87 % | 1.99 % ± 0.38 | 19.94 % | 238 k | 5/5 |
+| BC → HuRL | 2.49 % | 2.07 % ± 0.13 | 6.47 % | 13 k | 5/5 |
+| HEPO (from scratch) | 58.87 % | 2.40 % ± 0.05 | 12.98 % | 41 k | 5/5 |
+| IQL → PPO + KL | 2.43 % | 1.51 % ± 0.27 | 3.20 % | 13 k | 5/5 |
+| IQL + HUBL → PPO + KL | 2.44 % | 1.61 % ± 0.13 | 2.72 % | 13 k | 5/5 |
+
+Variants that use Sum of Squares offline (BC, DAgger, HuRL's h, IQL/HUBL data) include its 12,800 steps in their step counts; HEPO's heuristic rollouts are half of its PPO steps.
+

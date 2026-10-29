@@ -1,0 +1,224 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs,array}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage[hidelinks]{hyperref}
+\graphicspath{{../results/}}
+\setlist{itemsep=2pt,topsep=4pt}
+
+\title{Heuristic-guided reinforcement learning\\on toy combinatorial problems}
+\author{Luis Felipe Cattelan}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We compare eleven ways of using a hand-written heuristic policy to help PPO, from behaviour cloning with and
+without a KL anchor, through DAgger, to three methods from the literature: HuRL (heuristic value as reward
+shaping), HEPO (heuristic reward with a policy-improvement constraint) and HUBL (heuristic blending in offline
+RL, here IQL). All are evaluated on four toy problems with known heuristics: online bin packing (with two different
+guides), online knapsack, load balancing on heterogeneous servers and lost-sales inventory control, with 5 seeds
+and 1.5M environment steps each. We ask whether a method (1)~ends better than RL from scratch, (2)~reaches the
+heuristic's level faster than RL from scratch, and (3)~ends better than the heuristic. With this budget the answer to
+(1) is almost always no: only IQL $\to$ PPO + KL (bin packing with the strong guide) and HuRL (load balancing)
+are significantly better than PPO from scratch, and warm starts are sometimes significantly worse. The answer to (2)
+is yes for nearly every method that uses the heuristic offline (IQL/HUBL and DAgger in all five experiments), as
+long as the guide is beatable. The answer to (3) is yes for every warm-started method in every experiment, but PPO from scratch also
+beats the heuristic in four of the five experiments.
+\end{abstract}
+
+\section{Setting}
+
+\paragraph{Questions.} Given a decent heuristic policy $\pi_H$ for a sequential decision problem, which ways of
+feeding it into reinforcement learning
+\begin{enumerate}[label=\textbf{Q\arabic*}, leftmargin=*]
+\item end \textbf{better than RL from scratch} (final metric of the trained policy, same environment budget)?
+\item \textbf{reach the heuristic's level faster} than RL from scratch (environment steps until the policy first
+  beats the heuristic, counting the heuristic's demonstration steps)?
+\item end \textbf{better than the heuristic} itself?
+\end{enumerate}
+
+\paragraph{Problems.} Four problems with fixed-length episodes, a discrete (masked) action space, a small vector
+observation and a per-episode metric where lower is better (Table~\ref{tab:problems}). Each has a \emph{guide}
+heuristic that the methods learn from and, where we know one, a stronger \emph{reference} heuristic that shows how
+much room there is above the guide. Bin packing is run twice: guided by the weak Best Fit and by the near-optimal
+Sum of Squares.
+
+\begin{table}[h]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\begin{tabular}{L{2.3cm}L{5.2cm}L{2.4cm}L{2.5cm}L{2.4cm}}
+\toprule
+Problem & Decision (episode) & Metric & Guide & Reference \\
+\midrule
+Online bin packing & place an item of size 3 or 4 ($p = 2/3, 1/3$) into a bin of capacity 12 (200 items)
+  & wasted capacity & Best Fit 9.68\% / Sum of Squares 2.36\% & Sum of Squares 2.36\% \\
+Online knapsack & accept/reject items, weight and value uniform on $\{1..10\}$, capacity 250 (200 items)
+  & gap to the offline fractional optimum & static density threshold 3.69\% & adaptive threshold 1.24\% \\
+Load balancing & send a job (size $\sim$Exp(1)) to one of 4 FIFO servers with speeds 0.4--1.6, load 0.85 (200 jobs)
+  & mean sojourn time & shortest expected delay 1.73 & --- (least work left: 1.96) \\
+Lost-sales inventory & order 0--15 units, lead time 3, Poisson(5) demand, holding 1, lost sale 9 (100 periods)
+  & mean cost per period & base stock ($S = 23$) 6.94 & capped base stock 6.70 \\
+\bottomrule
+\end{tabular}
+\caption{The toy problems. Heuristic values are on 256 fixed evaluation episodes. A uniformly random policy scores
+13.6\%, 55.0\%, 3.99 and 129.0 respectively.}
+\label{tab:problems}
+\end{table}
+
+\section{Methods}
+
+All methods share the same PPO: separate 2$\times$128 tanh MLPs for actor and critic, 16 parallel environments
+$\times$ 128 steps per update, 4 epochs, minibatch 512, Adam $3\cdot10^{-4}$, $\gamma = 1$ (finite horizon), GAE
+$\lambda = 0.95$, clip 0.2, entropy 0.01, value coefficient 0.5, gradient norm 0.5. The heuristic is a policy
+$\pi_H(s)$, so the literature methods built around a heuristic reward or value were adapted as described.
+
+\begin{enumerate}[leftmargin=*]
+\item \textbf{PPO from scratch.} The heuristic is not used.
+\item \textbf{BC $\to$ PPO (naive).} Behaviour cloning on 64 heuristic episodes (cross-entropy, 10 epochs), then PPO
+  from the cloned policy.
+\item \textbf{BC $\to$ PPO + KL.} Same, but PPO adds $\beta_u\,\mathrm{KL}(\pi \,\|\, \pi_{\mathrm{BC}})$ to the
+  frozen clone, with $\beta$ decaying linearly from 1 to 0 by 50\% (or 20\%) of training, and the first 10 updates
+  train only the critic.
+\item \textbf{DAgger $\to$ PPO (naive / + KL).} The same 64-episode budget in 4 rounds: round 0 is the heuristic's
+  own play, later rounds let the current policy act while the heuristic labels the visited states; retrain on the
+  aggregate after each round. Then PPO as in 2 or 3.
+\item \textbf{HuRL} (Cheng et al., 2021). A heuristic value $h(s)$ is fitted by least squares to the heuristic's
+  Monte-Carlo returns on the demonstrations. PPO then trains on the reshaped problem
+  $\tilde r = r + (1-\lambda_n)\gamma\, h(s')$, $\tilde\gamma = \lambda_n\gamma$, with
+  $\lambda_n = \lambda_0 + (1-\lambda_0)\tanh(\omega n)$, $\lambda_0 = 0.9$, reaching $\approx 1$ at half of
+  training. Run from scratch and from the BC policy (\textbf{BC $\to$ HuRL}).
+\item \textbf{HEPO} (Lee et al., 2024). Maximise $(1+\alpha)J(\pi) + H(\pi)$ subject to $J(\pi) \ge J(\pi_H)$.
+  Adaptation: the heuristic reward is $h(s,a) = 0.1\cdot\mathbb 1[a = \pi_H(s)]$, whose optimal policy is the
+  heuristic itself, so $\pi_H$ is the heuristic (not trained). Half of the environments are played by $\pi_H$ on the
+  same random sequences; $\pi$ is updated on both halves with advantage $(1+\alpha)A_r + A_h$ and
+  $\pi_H(a\mid s) = 1$ in the importance ratio; $\alpha \leftarrow \max(0, \alpha - (\hat J(\pi) - \hat J(\pi_H)))$
+  from Monte-Carlo returns.
+\item \textbf{IQL $\to$ PPO + KL.} Offline RL on 64 $\varepsilon$-greedy heuristic episodes with
+  $\varepsilon \in [0, 0.5]$ (mixed quality): discrete IQL (expectile 0.7, $\gamma = 0.99$, 10k updates) with an
+  advantage-weighted actor ($\beta = 10$); then PPO + KL to that actor.
+\item \textbf{IQL + HUBL $\to$ PPO + KL} (Geng et al., 2023). Same, with HUBL's relabelled targets
+  $\tilde r = r + \gamma\lambda h'$, $\tilde\gamma = \gamma(1-\lambda)$, $h$ the Monte-Carlo return-to-go and
+  $\lambda = 0.1\cdot\mathrm{rank}(\tau)/n$ per trajectory.
+\end{enumerate}
+
+\paragraph{Protocol.} 5 seeds per method and experiment, 1.5M PPO steps. The heuristic's offline data
+(64 episodes, i.e.\ 12,800 steps; 6,400 for inventory) is counted as environment interaction; HEPO's heuristic
+half is part of its PPO steps. Policies are evaluated greedily every 10 updates on 64 fixed episodes (learning
+curves) and at the end on 256 fixed episodes, the same for every method and heuristic. Method-specific
+hyperparameters were set once from the papers' recommendations and not tuned.
+
+\section{Results}
+
+\input{tables}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{overview.png}
+\caption{Final metric relative to the guide heuristic (mean $\pm$ std over seeds; left of 0 is better than the
+guide). Dotted: the reference heuristic when it is within the plotted range.}
+\label{fig:overview}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\begin{subfigure}{0.49\linewidth}\includegraphics[width=\linewidth]{binpack/best_fit/learning_curves_guided.png}\end{subfigure}
+\begin{subfigure}{0.49\linewidth}\includegraphics[width=\linewidth]{binpack/sum_of_squares/learning_curves_guided.png}\end{subfigure}
+\begin{subfigure}{0.49\linewidth}\includegraphics[width=\linewidth]{knapsack/static_threshold/learning_curves_guided.png}\end{subfigure}
+\begin{subfigure}{0.49\linewidth}\includegraphics[width=\linewidth]{load_balancing/shortest_expected_delay/learning_curves_guided.png}\end{subfigure}
+\begin{subfigure}{0.49\linewidth}\includegraphics[width=\linewidth]{inventory/base_stock/learning_curves_guided.png}\end{subfigure}
+\begin{subfigure}{0.49\linewidth}\includegraphics[width=\linewidth]{binpack/sum_of_squares/learning_curves.png}\end{subfigure}
+\caption{Learning curves (mean $\pm$ std over 5 seeds, x-axis includes the heuristic's demonstration steps).
+First five panels: the literature methods against PPO from scratch and BC $\to$ PPO + KL on each experiment. Last
+panel: the cloning variants (BC/DAgger, naive and with KL) on bin packing guided by Sum of Squares.}
+\label{fig:curves}
+\end{figure}
+
+Table~\ref{tab:scorecard} answers the three questions per method and experiment; Table~\ref{tab:final} gives
+the final metric (Q1, Q3) and Table~\ref{tab:beat} the steps to beat the guide (Q2). Figures~\ref{fig:overview}
+and~\ref{fig:curves} show the final metric relative to the guide and the learning curves.
+
+\paragraph{Q1: better than RL from scratch?} Rarely, with 1.5M steps.
+\begin{itemize}[leftmargin=*]
+\item Only two cases are significantly better than PPO from scratch: IQL $\to$ PPO + KL on bin packing with Sum of
+  Squares (1.51\% vs 2.48\%) and HuRL on load balancing (1.62 vs 1.64).
+\item Most other cases are within noise. On bin packing PPO from scratch varies a lot between seeds
+  ($\pm$0.85\%), so even large mean gains (BC $\to$ PPO + KL 1.63\% vs 2.48\% with Best Fit) are not significant
+  with 5 seeds.
+\item Several are significantly \emph{worse}: on knapsack and load balancing, PPO from scratch ends at 1.45\% and
+  1.64, and most warm starts end at 1.56--1.82\% and 1.65--1.69. Starting from the heuristic, and especially being
+  anchored to it, can leave the policy short of what PPO finds alone.
+\item HEPO is significantly worse than PPO from scratch in four experiments: it ends at the guide's level
+  (Q3 below).
+\end{itemize}
+
+\paragraph{Q2: reaches the heuristic's level faster?} Yes, for most methods that use the heuristic offline, as long
+as the guide is beatable.
+\begin{itemize}[leftmargin=*]
+\item IQL $\to$ PPO + KL, IQL + HUBL $\to$ PPO + KL, DAgger $\to$ PPO and BC $\to$ HuRL are faster than PPO from
+  scratch in all five experiments; BC $\to$ PPO (naive or + KL) in four.
+\item With a strong guide the gain is large: 13k steps instead of 205k on load balancing, 6k instead of 102k on
+  inventory, and 13--74k for most warm starts instead of 1157k on bin packing with Sum of Squares (where PPO from
+  scratch beats the guide in only 4 of 5 seeds).
+\item With the weak Best Fit guide, cloning is \emph{slower} (BC $\to$ PPO 812k, BC $\to$ PPO + KL 771k, vs
+  573k): the clone starts exactly at Best Fit's level and has to unlearn it, and the KL anchor resists that. Methods that change the learning problem instead are faster:
+  HuRL from scratch 156k, BC $\to$ HuRL 218k.
+\item HuRL from scratch is the least reliable here (faster in two of five): its shortened horizon helps on bin
+  packing with Best Fit and on knapsack, but not on load balancing (504k vs 205k).
+\end{itemize}
+
+\paragraph{Q3: better than the heuristic?} Yes, for every warm-started method; but this does not separate the
+methods from PPO from scratch, which beats the heuristic in four of five experiments too.
+\begin{itemize}[leftmargin=*]
+\item All warm-started methods end significantly better than the guide in all five experiments, and HuRL in four
+  (with Sum of Squares it is within noise: 1.99 $\pm$ 0.38\% vs 2.36\%).
+\item PPO from scratch also does, except on bin packing with Sum of Squares, where it is within noise of the guide
+  (2.48\% vs 2.36\%).
+\item HEPO stays at the guide's level on bin packing (9.68\% $\pm$ 0.00 with Best Fit, 2.40\% with Sum of Squares).
+  Its multiplier $\alpha$ keeps growing because the sampled (exploring) policy rarely beats the deterministic
+  heuristic in our Monte-Carlo estimate, and the heuristic's half of the data keeps pulling $\pi$ towards
+  $\pi_H$. We attribute this to our adaptation rather than to HEPO itself.
+\item How far beyond: on bin packing the warm starts end 12--36\% below Sum of Squares' waste and 62--83\% below
+  Best Fit's; on knapsack the best methods halve the static threshold's gap (1.44\% vs 3.69\%) but none reaches
+  the adaptive threshold (1.24\%); on inventory all methods reach the level of capped base stock (6.68--6.75 vs
+  6.70).
+\end{itemize}
+
+\section{Conclusions}
+
+\begin{itemize}[leftmargin=*]
+\item \textbf{Q2 is where the heuristic pays off.} Offline use of a strong heuristic (IQL/HUBL, DAgger, BC)
+  passes it 10--20 times sooner than PPO from scratch (load balancing, inventory, bin packing with Sum of Squares);
+  IQL/HUBL $\to$ PPO + KL, DAgger $\to$ PPO and BC $\to$ HuRL are faster in every experiment, though only
+  marginally with the weak Best Fit guide for IQL/HUBL.
+\item \textbf{Q1 is rarely answered yes} with a budget at which PPO from scratch converges: only IQL $\to$ PPO + KL
+  (bin packing, strong guide) and HuRL (load balancing) end significantly better, and anchored warm starts can end
+  worse. A smaller budget is the natural test of whether the lead from Q2 turns into a final advantage.
+\item \textbf{Q3 is easy on these problems}: nearly every method, including PPO from scratch, ends beyond the guide;
+  the stronger references (adaptive threshold, capped base stock) are matched at best.
+\item With a \textbf{weak guide}, cloning it does not even speed things up; reward shaping with its value (HuRL)
+  does.
+\item \textbf{HEPO}, as adapted to a heuristic policy, does not get past the guide on bin packing; a fairer version
+  would compare greedy returns in the multiplier update or leave the heuristic's half out of the policy update.
+\end{itemize}
+
+\paragraph{Limitations.} 5 seeds (so only large differences are significant), one training budget, untuned
+method-specific hyperparameters, and small problems whose guides are fully observable functions of the state (so
+cloning is almost exact). Q2 uses the first evaluation below the guide on 64 episodes, which is noisy for methods
+that start right at the guide's level.
+
+\paragraph{Reproducing.}
+\begin{itemize}[leftmargin=*]
+\item \texttt{python run\_experiments.py --problem P [--demo H]} trains all methods for one experiment, with
+  \texttt{P} one of \texttt{binpack}, \texttt{knapsack}, \texttt{load\_balancing}, \texttt{inventory};
+\item \texttt{python plot\_results.py} redraws every figure;
+\item \texttt{python report/make\_tables.py} regenerates the tables of this report.
+\end{itemize}
+
+\end{document}

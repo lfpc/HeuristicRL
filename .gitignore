@@ -1,0 +1,17 @@
+# environments and caches
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# the Crafter project shared as a zip (not ours to publish) and our runs on it
+RL-AHD-Crafter-share.zip
+crafter_exp/
+
+# LaTeX build files
+report/*.aux
+report/*.log
+report/*.out
+report/*.fls
+report/*.fdb_latexmk
+report/*.synctex.gz

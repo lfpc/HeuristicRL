@@ -1,0 +1,88 @@
+       adaptive_threshold: 1.235
+         static_threshold: 3.686
+                   greedy: 54.481
+                   random: 54.955
+Training 55 runs on 10 workers ...
+          scratch seed 1: final 0.0147
+           bc_ppo seed 1: final 0.0143
+           bc_ppo seed 3: final 0.0188
+          scratch seed 4: final 0.0145
+           bc_ppo seed 4: final 0.0145
+          scratch seed 3: final 0.0146
+          scratch seed 0: final 0.0157
+          scratch seed 2: final 0.0130
+           bc_ppo seed 0: final 0.0145
+           bc_ppo seed 2: final 0.0200
+   bc_ppo_kl_fast seed 1: final 0.0204
+   bc_ppo_kl_fast seed 0: final 0.0172
+   bc_ppo_kl_fast seed 2: final 0.0160
+   bc_ppo_kl_fast seed 4: final 0.0148
+   bc_ppo_kl_fast seed 3: final 0.0164
+        bc_ppo_kl seed 4: final 0.0154
+        bc_ppo_kl seed 2: final 0.0148
+        bc_ppo_kl seed 1: final 0.0151
+        bc_ppo_kl seed 0: final 0.0164
+        bc_ppo_kl seed 3: final 0.0161
+       dagger_ppo seed 0: final 0.0167
+       dagger_ppo seed 1: final 0.0182
+       dagger_ppo seed 2: final 0.0199
+       dagger_ppo seed 3: final 0.0163
+       dagger_ppo seed 4: final 0.0201
+    dagger_ppo_kl seed 1: final 0.0177
+    dagger_ppo_kl seed 2: final 0.0205
+    dagger_ppo_kl seed 0: final 0.0167
+    dagger_ppo_kl seed 3: final 0.0160
+    dagger_ppo_kl seed 4: final 0.0175
+             hurl seed 0: final 0.0203
+             hurl seed 2: final 0.0164
+             hurl seed 1: final 0.0192
+             hurl seed 3: final 0.0166
+             hurl seed 4: final 0.0145
+          bc_hurl seed 1: final 0.0161
+          bc_hurl seed 0: final 0.0186
+          bc_hurl seed 2: final 0.0146
+          bc_hurl seed 3: final 0.0171
+          bc_hurl seed 4: final 0.0152
+             hepo seed 0: final 0.0268
+             hepo seed 1: final 0.0324
+             hepo seed 3: final 0.0324
+             hepo seed 2: final 0.0301
+             hepo seed 4: final 0.0307
+       iql_ppo_kl seed 1: final 0.0153
+       iql_ppo_kl seed 0: final 0.0157
+       iql_ppo_kl seed 2: final 0.0137
+       iql_ppo_kl seed 3: final 0.0183
+       iql_ppo_kl seed 4: final 0.0147
+      hubl_ppo_kl seed 0: final 0.0151
+      hubl_ppo_kl seed 1: final 0.0155
+      hubl_ppo_kl seed 2: final 0.0131
+      hubl_ppo_kl seed 3: final 0.0134
+      hubl_ppo_kl seed 4: final 0.0150
+# Online knapsack: guided by Static threshold
+
+Gap to offline optimum (%) (lower is better), greedy policies on 256 fixed episodes
+(200 items, weight and value i.i.d. uniform on {1..10}, capacity 250).
+
+| Heuristic | Metric |
+|---|---|
+| Adaptive threshold | 1.24% ± 0.72 |
+| Static threshold (guide) | 3.69% ± 3.04 |
+| Greedy | 54.48% ± 4.80 |
+| Random | 54.95% ± 4.41 |
+
+| Variant | Initial | Final | Worst during training | Steps to beat Static threshold (median) | Seeds beating Static threshold |
+|---|---|---|---|---|---|
+| PPO from scratch | 77.67% | 1.45% ± 0.09 | 53.88% | 225 k | 5/5 |
+| BC → PPO (naive) | 4.76% | 1.64% ± 0.25 | 7.84% | 136 k | 5/5 |
+| BC → PPO + KL (decay 50%) | 4.76% | 1.56% ± 0.06 | 4.87% | 115 k | 5/5 |
+| BC → PPO + KL (decay 20%) | 4.76% | 1.70% ± 0.19 | 5.07% | 115 k | 5/5 |
+| DAgger → PPO (naive) | 4.56% | 1.82% ± 0.16 | 6.91% | 177 k | 5/5 |
+| DAgger → PPO + KL (decay 50%) | 4.56% | 1.77% ± 0.15 | 4.70% | 484 k | 5/5 |
+| HuRL (from scratch) | 77.67% | 1.74% ± 0.21 | 55.07% | 115 k | 5/5 |
+| BC → HuRL | 4.76% | 1.63% ± 0.14 | 5.94% | 115 k | 5/5 |
+| HEPO (from scratch) | 77.67% | 3.05% ± 0.21 | 8.68% | 123 k | 5/5 |
+| IQL → PPO + KL | 7.11% | 1.55% ± 0.15 | 7.11% | 115 k | 5/5 |
+| IQL + HUBL → PPO + KL | 4.57% | 1.44% ± 0.10 | 4.66% | 13 k | 5/5 |
+
+Variants that use Static threshold offline (BC, DAgger, HuRL's h, IQL/HUBL data) include its 12,800 steps in their step counts; HEPO's heuristic rollouts are half of its PPO steps. 'Beat' is measured on the 64 evaluation episodes of the learning curves.
+

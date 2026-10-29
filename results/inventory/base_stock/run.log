@@ -1,0 +1,88 @@
+               base_stock: 6.938
+        capped_base_stock: 6.699
+                 constant: 15.112
+                   random: 129.001
+Training 55 runs on 10 workers ...
+          scratch seed 2: final 6.7012
+          scratch seed 3: final 6.6901
+           bc_ppo seed 2: final 6.6743
+          scratch seed 0: final 6.6956
+           bc_ppo seed 1: final 6.7019
+          scratch seed 4: final 6.6701
+           bc_ppo seed 3: final 6.6850
+          scratch seed 1: final 6.7182
+           bc_ppo seed 4: final 6.7245
+           bc_ppo seed 0: final 6.6915
+   bc_ppo_kl_fast seed 0: final 6.6828
+   bc_ppo_kl_fast seed 2: final 6.7457
+   bc_ppo_kl_fast seed 1: final 6.8032
+   bc_ppo_kl_fast seed 3: final 6.6956
+        bc_ppo_kl seed 3: final 6.7407
+        bc_ppo_kl seed 0: final 6.7167
+        bc_ppo_kl seed 1: final 6.6911
+   bc_ppo_kl_fast seed 4: final 6.7329
+        bc_ppo_kl seed 2: final 6.7469
+        bc_ppo_kl seed 4: final 6.7212
+       dagger_ppo seed 0: final 6.6774
+       dagger_ppo seed 1: final 6.6748
+       dagger_ppo seed 2: final 6.6777
+       dagger_ppo seed 4: final 6.6746
+       dagger_ppo seed 3: final 6.6909
+    dagger_ppo_kl seed 0: final 6.6480
+    dagger_ppo_kl seed 1: final 6.7073
+    dagger_ppo_kl seed 2: final 6.7111
+    dagger_ppo_kl seed 3: final 6.7008
+    dagger_ppo_kl seed 4: final 6.6500
+             hurl seed 0: final 6.6989
+             hurl seed 2: final 6.7354
+             hurl seed 1: final 6.7277
+             hurl seed 3: final 6.7030
+             hurl seed 4: final 6.6991
+          bc_hurl seed 0: final 6.6651
+          bc_hurl seed 1: final 6.7379
+          bc_hurl seed 4: final 6.7022
+          bc_hurl seed 3: final 6.6825
+          bc_hurl seed 2: final 6.7423
+             hepo seed 0: final 6.7505
+             hepo seed 2: final 6.7505
+             hepo seed 1: final 6.7076
+             hepo seed 3: final 6.7875
+             hepo seed 4: final 6.7505
+       iql_ppo_kl seed 0: final 6.7234
+       iql_ppo_kl seed 1: final 6.7521
+       iql_ppo_kl seed 2: final 6.6728
+       iql_ppo_kl seed 3: final 6.6960
+       iql_ppo_kl seed 4: final 6.6795
+      hubl_ppo_kl seed 0: final 6.7171
+      hubl_ppo_kl seed 1: final 6.7875
+      hubl_ppo_kl seed 2: final 6.7255
+      hubl_ppo_kl seed 3: final 6.7115
+      hubl_ppo_kl seed 4: final 6.7732
+# Lost-sales inventory: guided by Base stock
+
+Mean cost per period (lower is better), greedy policies on 256 fixed episodes
+(Poisson(5) demand, lead time 3, holding 1, lost sales 9, orders 0..15, 100 periods).
+
+| Heuristic | Metric |
+|---|---|
+| Base stock (guide) | 6.94 ± 0.81 |
+| Capped base stock | 6.70 ± 0.76 |
+| Constant | 15.11 ± 7.87 |
+| Random | 129.00 ± 25.89 |
+
+| Variant | Initial | Final | Worst during training | Steps to beat Base stock (median) | Seeds beating Base stock |
+|---|---|---|---|---|---|
+| PPO from scratch | 99.14 | 6.70 ± 0.02 | 38.05 | 102 k | 5/5 |
+| BC → PPO (naive) | 6.73 | 6.70 ± 0.02 | 7.01 | 6 k | 5/5 |
+| BC → PPO + KL (decay 50%) | 6.73 | 6.72 ± 0.02 | 6.91 | 6 k | 5/5 |
+| BC → PPO + KL (decay 20%) | 6.73 | 6.73 ± 0.04 | 6.92 | 6 k | 5/5 |
+| DAgger → PPO (naive) | 6.99 | 6.68 ± 0.01 | 6.97 | 6 k | 5/5 |
+| DAgger → PPO + KL (decay 50%) | 6.99 | 6.68 ± 0.03 | 7.00 | 6 k | 5/5 |
+| HuRL (from scratch) | 99.14 | 6.71 ± 0.02 | 33.86 | 191 k | 5/5 |
+| BC → HuRL | 6.73 | 6.71 ± 0.03 | 7.14 | 6 k | 5/5 |
+| HEPO (from scratch) | 99.14 | 6.75 ± 0.03 | 18.14 | 164 k | 5/5 |
+| IQL → PPO + KL | 6.98 | 6.70 ± 0.03 | 6.99 | 6 k | 5/5 |
+| IQL + HUBL → PPO + KL | 6.98 | 6.74 ± 0.03 | 6.98 | 6 k | 5/5 |
+
+Variants that use Base stock offline (BC, DAgger, HuRL's h, IQL/HUBL data) include its 6,400 steps in their step counts; HEPO's heuristic rollouts are half of its PPO steps. 'Beat' is measured on the 64 evaluation episodes of the learning curves.
+

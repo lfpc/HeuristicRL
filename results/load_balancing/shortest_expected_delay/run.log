@@ -1,0 +1,86 @@
+  shortest_expected_delay: 1.729
+               least_work: 1.956
+                   random: 3.991
+Training 55 runs on 10 workers ...
+          scratch seed 1: final 1.6251
+          scratch seed 4: final 1.6646
+          scratch seed 0: final 1.6272
+           bc_ppo seed 3: final 1.6330
+           bc_ppo seed 0: final 1.6606
+           bc_ppo seed 1: final 1.6637
+          scratch seed 3: final 1.6377
+           bc_ppo seed 4: final 1.6811
+           bc_ppo seed 2: final 1.6536
+          scratch seed 2: final 1.6618
+   bc_ppo_kl_fast seed 4: final 1.6924
+   bc_ppo_kl_fast seed 3: final 1.6339
+   bc_ppo_kl_fast seed 0: final 1.6634
+   bc_ppo_kl_fast seed 1: final 1.6612
+   bc_ppo_kl_fast seed 2: final 1.6961
+        bc_ppo_kl seed 1: final 1.6670
+        bc_ppo_kl seed 0: final 1.6407
+        bc_ppo_kl seed 3: final 1.6812
+        bc_ppo_kl seed 4: final 1.6687
+        bc_ppo_kl seed 2: final 1.6970
+       dagger_ppo seed 1: final 1.6501
+       dagger_ppo seed 0: final 1.6828
+       dagger_ppo seed 2: final 1.6765
+       dagger_ppo seed 3: final 1.6907
+       dagger_ppo seed 4: final 1.6692
+    dagger_ppo_kl seed 1: final 1.7067
+    dagger_ppo_kl seed 2: final 1.6864
+    dagger_ppo_kl seed 0: final 1.7073
+    dagger_ppo_kl seed 4: final 1.6703
+    dagger_ppo_kl seed 3: final 1.6771
+             hurl seed 0: final 1.6157
+             hurl seed 2: final 1.5976
+             hurl seed 3: final 1.6276
+             hurl seed 1: final 1.6286
+             hurl seed 4: final 1.6088
+          bc_hurl seed 2: final 1.6540
+          bc_hurl seed 0: final 1.6228
+          bc_hurl seed 1: final 1.6569
+          bc_hurl seed 4: final 1.6447
+          bc_hurl seed 3: final 1.6787
+             hepo seed 0: final 1.7192
+             hepo seed 1: final 1.7198
+             hepo seed 2: final 1.7279
+             hepo seed 3: final 1.7145
+             hepo seed 4: final 1.7211
+       iql_ppo_kl seed 0: final 1.6936
+       iql_ppo_kl seed 1: final 1.6839
+       iql_ppo_kl seed 3: final 1.6556
+       iql_ppo_kl seed 2: final 1.6952
+       iql_ppo_kl seed 4: final 1.6826
+      hubl_ppo_kl seed 0: final 1.6784
+      hubl_ppo_kl seed 1: final 1.6722
+      hubl_ppo_kl seed 2: final 1.7025
+      hubl_ppo_kl seed 3: final 1.6795
+      hubl_ppo_kl seed 4: final 1.6599
+# Load balancing: guided by Shortest expected delay
+
+Mean sojourn time (lower is better), greedy policies on 256 fixed episodes
+(4 FIFO servers with speeds (0.4, 0.8, 1.2, 1.6), Exp(1) job sizes, load 0.85, 200 jobs).
+
+| Heuristic | Metric |
+|---|---|
+| Shortest expected delay (guide) | 1.73 ± 0.70 |
+| Least work left | 1.96 ± 0.71 |
+| Random | 3.99 ± 1.28 |
+
+| Variant | Initial | Final | Worst during training | Steps to beat Shortest expected delay (median) | Seeds beating Shortest expected delay |
+|---|---|---|---|---|---|
+| PPO from scratch | 56.70 | 1.64 ± 0.02 | 12.35 | 205 k | 5/5 |
+| BC → PPO (naive) | 1.76 | 1.66 ± 0.02 | 1.77 | 13 k | 5/5 |
+| BC → PPO + KL (decay 50%) | 1.76 | 1.67 ± 0.02 | 1.77 | 13 k | 5/5 |
+| BC → PPO + KL (decay 20%) | 1.76 | 1.67 ± 0.02 | 1.77 | 13 k | 5/5 |
+| DAgger → PPO (naive) | 1.76 | 1.67 ± 0.01 | 1.77 | 13 k | 5/5 |
+| DAgger → PPO + KL (decay 50%) | 1.76 | 1.69 ± 0.02 | 1.77 | 13 k | 5/5 |
+| HuRL (from scratch) | 56.70 | 1.62 ± 0.01 | 8.29 | 504 k | 5/5 |
+| BC → HuRL | 1.76 | 1.65 ± 0.02 | 1.78 | 13 k | 5/5 |
+| HEPO (from scratch) | 56.70 | 1.72 ± 0.00 | 4.51 | 143 k | 5/5 |
+| IQL → PPO + KL | 1.75 | 1.68 ± 0.01 | 1.76 | 13 k | 5/5 |
+| IQL + HUBL → PPO + KL | 1.75 | 1.68 ± 0.01 | 1.78 | 13 k | 5/5 |
+
+Variants that use Shortest expected delay offline (BC, DAgger, HuRL's h, IQL/HUBL data) include its 12,800 steps in their step counts; HEPO's heuristic rollouts are half of its PPO steps. 'Beat' is measured on the 64 evaluation episodes of the learning curves.
+

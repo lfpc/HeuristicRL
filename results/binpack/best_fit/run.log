@@ -1,0 +1,58 @@
+                 best_fit: 9.681
+           sum_of_squares: 2.357
+                   random: 13.559
+Reusing 30 runs from /Users/luisfelipe/Documents/Projects/RL_AHD/results/binpack/best_fit/results.json
+Training 25 runs on 10 workers ...
+             hurl seed 1: final 0.0208
+             hurl seed 0: final 0.0188
+          bc_hurl seed 2: final 0.0160
+             hurl seed 3: final 0.0125
+          bc_hurl seed 4: final 0.0155
+             hurl seed 4: final 0.0170
+          bc_hurl seed 1: final 0.0203
+          bc_hurl seed 3: final 0.0125
+             hurl seed 2: final 0.0138
+          bc_hurl seed 0: final 0.0205
+             hepo seed 1: final 0.0968
+             hepo seed 0: final 0.0968
+             hepo seed 2: final 0.0968
+             hepo seed 3: final 0.0968
+             hepo seed 4: final 0.0968
+       iql_ppo_kl seed 0: final 0.0218
+       iql_ppo_kl seed 3: final 0.0162
+       iql_ppo_kl seed 1: final 0.0125
+       iql_ppo_kl seed 4: final 0.0202
+       iql_ppo_kl seed 2: final 0.0305
+      hubl_ppo_kl seed 1: final 0.0191
+      hubl_ppo_kl seed 0: final 0.0195
+      hubl_ppo_kl seed 2: final 0.0179
+      hubl_ppo_kl seed 3: final 0.0232
+      hubl_ppo_kl seed 4: final 0.0201
+{'Best Fit': [10, 10, 10, 11, 10, 11, 10, 12, 10, 6], 'Sum of Squares': [10, 11, 12, 12, 12, 12, 12, 7, 12]}
+# Online bin packing: guided by Best Fit
+
+Wasted bin capacity (%) (lower is better), greedy policies on 256 fixed episodes
+(B = 12, item sizes {3, 4}, p = {2/3, 1/3}, 200 items).
+
+| Heuristic | Metric |
+|---|---|
+| Best Fit (guide) | 9.68% ± 0.99 |
+| Sum of Squares | 2.36% ± 0.66 |
+| Random | 13.56% ± 2.70 |
+
+| Variant | Initial | Final | Worst during training | Steps to beat Best Fit (median) | Seeds beating Best Fit |
+|---|---|---|---|---|---|
+| PPO from scratch | 58.87% | 2.48% ± 0.85 | 14.05% | 573 k | 5/5 |
+| BC → PPO (naive) | 9.86% | 3.62% ± 1.48 | 11.53% | 812 k | 5/5 |
+| BC → PPO + KL (decay 50%) | 9.86% | 1.63% ± 0.23 | 13.30% | 771 k | 5/5 |
+| BC → PPO + KL (decay 20%) | 9.86% | 2.63% ± 1.11 | 13.42% | 648 k | 5/5 |
+| DAgger → PPO (naive) | 9.86% | 2.22% ± 0.98 | 15.29% | 443 k | 5/5 |
+| DAgger → PPO + KL (decay 50%) | 9.86% | 3.67% ± 1.97 | 11.44% | 832 k | 5/5 |
+| HuRL (from scratch) | 58.87% | 1.66% ± 0.31 | 23.46% | 156 k | 5/5 |
+| BC → HuRL | 9.86% | 1.70% ± 0.31 | 15.37% | 218 k | 5/5 |
+| HEPO (from scratch) | 58.87% | 9.68% ± 0.00 | 10.02% | 328 k | 4/5 |
+| IQL → PPO + KL | 9.86% | 2.02% ± 0.60 | 10.87% | 566 k | 5/5 |
+| IQL + HUBL → PPO + KL | 9.86% | 2.00% ± 0.18 | 9.88% | 545 k | 5/5 |
+
+Variants that use Best Fit offline (BC, DAgger, HuRL's h, IQL/HUBL data) include its 12,800 steps in their step counts; HEPO's heuristic rollouts are half of its PPO steps. 'Beat' is measured on the 64 evaluation episodes of the learning curves.
+
