@@ -6,13 +6,13 @@
 - HUBL (Geng et al., 2023): offline RL (here IQL) whose Bellman targets are
   partially replaced by Monte-Carlo heuristic values.
 """
-import copy
 
 import numpy as np
 import torch
 import torch.nn.functional as F
 from torch.distributions import Categorical
 
+from .offpolicy import IQL
 from .policy import mlp
 from .ppo import gae
 
@@ -190,32 +190,7 @@ def train_iql(policy, data, n_episodes, gamma=0.99, hubl_alpha=0.0, steps=10_000
     obs, nobs = torch.as_tensor(data["obs"]), torch.as_tensor(data["next_obs"])
     mask, act = torch.as_tensor(data["mask"]), torch.as_tensor(data["actions"])
     rew, disc, done = torch.as_tensor(rew), torch.as_tensor(disc, dtype=torch.float32), torch.as_tensor(data["done"])
-    q, v = mlp(obs.shape[1], mask.shape[1]), mlp(obs.shape[1], 1)
-    q_targ = copy.deepcopy(q).requires_grad_(False)
-    opt_q, opt_v = torch.optim.Adam(q.parameters(), lr=lr), torch.optim.Adam(v.parameters(), lr=lr)
-    opt_pi = torch.optim.Adam(policy.actor.parameters(), lr=lr)
+    agent = IQL(policy, obs.shape[1], mask.shape[1], gamma=gamma, lr=lr, expectile=expectile, beta=beta, tau=tau)
     for _ in range(steps):
         idx = torch.randint(len(act), (batch_size,), generator=gen)
-        o, a = obs[idx], act[idx]
-        q_sa = q_targ(o).gather(1, a[:, None]).squeeze(1)
-        diff = q_sa - v(o).squeeze(1)
-        weight = torch.where(diff > 0, expectile, 1 - expectile)
-        opt_v.zero_grad()
-        (weight * diff ** 2).mean().backward()
-        opt_v.step()
-
-        with torch.no_grad():
-            target = rew[idx] + disc[idx] * (1 - done[idx]) * v(nobs[idx]).squeeze(1)
-        opt_q.zero_grad()
-        F.mse_loss(q(o).gather(1, a[:, None]).squeeze(1), target).backward()
-        opt_q.step()
-        with torch.no_grad():
-            for p, pt in zip(q.parameters(), q_targ.parameters()):
-                pt.lerp_(p, tau)
-
-        with torch.no_grad():
-            w = torch.exp(beta * (q_sa - v(o).squeeze(1))).clamp(max=100.0)
-        logp = torch.log_softmax(policy.logits(o, mask[idx]), -1).gather(1, a[:, None]).squeeze(1)
-        opt_pi.zero_grad()
-        (-(w * logp).mean()).backward()
-        opt_pi.step()
+        agent.update(obs[idx], mask[idx], act[idx], rew[idx], disc[idx], nobs[idx], None, done[idx])

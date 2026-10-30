@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Patch, Rectangle
 
 from hgrl.evaluate import EVAL_SEED
-from problems.binpack import BinPackingConfig, BinPackingEnv, best_fit, sum_of_squares
+from problems.binpack import TOY, BinPackingEnv, best_fit, sum_of_squares
 
 N_ITEMS = 30
 COLORS = {3: "#3353B7", 4: "#DC6027"}   # item size -> colour
@@ -48,8 +48,8 @@ def draw(ax, bins, title, B, smallest):
     ax.axis("off")
 
 
-def main(out=Path(__file__).resolve().parent / "results" / "binpack", pdf_dir=None):
-    cfg = BinPackingConfig()
+def main(out=Path(__file__).resolve().parent / "results" / "binpack_toy", pdf_dir=None):
+    cfg = TOY   # sizes 3 and 4 only: the colours and "stranded" gaps below assume them
     smallest = min(cfg.item_sizes)
     results = {name: pack(h, cfg, N_ITEMS) for name, h in
                [("Best Fit", best_fit), ("Sum of Squares", sum_of_squares)]}

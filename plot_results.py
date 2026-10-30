@@ -16,9 +16,46 @@ STYLE = {
     "hepo": dict(color="#C2185B", ls="-", label="HEPO (from scratch)"),
     "iql_ppo_kl": dict(color="#6B7280", ls="-.", label="IQL → PPO + KL"),
     "hubl_ppo_kl": dict(color="#0E9BC4", ls="-", label="IQL + HUBL → PPO + KL"),
+    "kickstart": dict(color="#C7961C", ls="--", label="Kickstarting (from scratch)"),
+    "bc_anchor": dict(color="#3353B7", ls="--", label="BC → PPO + heuristic anchor"),
+    "bc_anchor_big": dict(color="#9B5FC0", ls="-", label="BC → PPO + heuristic anchor, 4× batch"),
+    "hubl_anchor": dict(color="#0E9BC4", ls="--", label="IQL + HUBL → PPO + heuristic anchor"),
+    "residual": dict(color="#DC6027", ls="-", label="Residual policy on heuristic"),
+    "jsrl": dict(color="#6B7280", ls="--", label="Jump-Start RL"),
+    "rollout_dagger_kl": dict(color="#C2185B", ls="--", label="Rollout-DAgger → PPO + KL"),
+    "rollout_dagger_held": dict(color="#C2185B", ls="-", label="Rollout-DAgger → PPO + held KL"),
+    "iql_online": dict(color="#1E9E6A", ls="--", label="IQL offline → online"),
+    "dqfd": dict(color="#1F2937", ls="-.", label="DQfD"),
+    "crafter_imitate": dict(color="#C7961C", ls="-.", label="Imitation, annealed 25% (Crafter)"),
+    "crafter_imitate_c01": dict(color="#3353B7", ls="-.", label="Imitation, constant 0.1 (Crafter)"),
+    "crafter_residual_b2": dict(color="#E8A87C", ls="-", label="Residual prior β = 2 (Crafter)"),
+    "crafter_residual_b4": dict(color="#DC6027", ls="-.", label="Residual prior β = 4 (Crafter)"),
+    "crafter_residual_b8": dict(color="#8C3A12", ls="-", label="Residual prior β = 8 (Crafter)"),
+    "residual_fade": dict(color="#DC6027", ls="-", label="Residual prior β = 4, fading"),
+    "dqfd_fade": dict(color="#1F2937", ls="-", label="DQfD, fading"),
+    "iql_online_fade": dict(color="#1E9E6A", ls="-", label="IQL offline → online, fading"),
+    "iql_online_norm": dict(color="#1E9E6A", ls=":", label="IQL offline → online, fading, normalised AWR"),
+    "iql_online_norm_held": dict(color="#0B5D3B", ls="--", label="IQL offline → online, normalised AWR, held"),
+    "iql_online_norm_g99": dict(color="#6FCF97", ls="-", label="IQL offline → online, fading, normalised AWR, γ = 0.99"),
+    "bc_imitate": dict(color="#3353B7", ls="-", label="BC → PPO + annealed imitation"),
+    "hubl_imitate": dict(color="#0E9BC4", ls="-", label="IQL + HUBL → PPO + annealed imitation"),
+    "rollout_dagger_kl_z0": dict(color="#C2185B", ls=":", label="Rollout-DAgger (no test) → PPO + KL"),
+    "bc_qfilter": dict(color="#3353B7", ls=":", label="BC → PPO + Q-filtered imitation"),
+    "hubl_qfilter": dict(color="#0E9BC4", ls=":", label="IQL + HUBL → PPO + Q-filtered imitation"),
+    "gated": dict(color="#C7961C", ls="-", label="Performance-gated imitation"),
+    "bc_gated": dict(color="#3353B7", ls="--", label="BC → PPO + performance-gated imitation"),
+    "hubl_gated": dict(color="#0E9BC4", ls="--", label="IQL + HUBL → PPO + performance-gated imitation"),
 }
 CLONING = ["scratch", "bc_ppo", "bc_ppo_kl", "bc_ppo_kl_fast", "dagger_ppo", "dagger_ppo_kl"]
 GUIDED = ["scratch", "bc_ppo_kl", "hurl", "bc_hurl", "hepo", "iql_ppo_kl", "hubl_ppo_kl"]
+ONLINE = ["scratch", "hubl_ppo_kl", "kickstart", "bc_anchor", "bc_anchor_big", "hubl_anchor", "residual", "jsrl",
+          "rollout_dagger_kl", "rollout_dagger_held", "iql_online", "dqfd"]
+CRAFTER = ["scratch", "kickstart", "residual", "crafter_imitate", "crafter_imitate_c01", "crafter_residual_b2",
+           "crafter_residual_b4", "crafter_residual_b8"]
+FADE = ["scratch", "crafter_residual_b4", "residual_fade", "dqfd", "dqfd_fade", "iql_online", "iql_online_fade",
+        "iql_online_norm", "iql_online_norm_held", "iql_online_norm_g99"]
+RELEASE = ["scratch", "kickstart", "crafter_imitate", "gated", "bc_anchor", "bc_qfilter", "hubl_ppo_kl",
+           "rollout_dagger_kl", "rollout_dagger_kl_z0"]
 INK, MUTED, GRID ="#1F2937", "#6B7280", "#E5E7EB"
 POSTER_FIGURES = Path(__file__).resolve().parents[1] / "posters" / "figures"
 
@@ -55,7 +92,8 @@ def plot_learning_curves(results_path, out_dir, pdf_dir=None, variants=CLONING, 
     plt.rcParams.update({"font.family": "sans-serif", "font.size": 15,
                          "axes.edgecolor": MUTED, "axes.labelcolor": INK,
                          "xtick.color": MUTED, "ytick.color": MUTED})
-    fig, ax = plt.subplots(figsize=(10, 4.4))  # wide and flat: fits half a poster block
+    outside = len(present) > 7   # many methods: legend to the right of the axes
+    fig, ax = plt.subplots(figsize=(14 if outside else 10, 4.4))  # wide and flat: fits half a poster block
     ax.grid(axis="y", color=GRID, lw=1)
     ax.set_axisbelow(True)
     ax.spines[["top", "right"]].set_visible(False)
@@ -91,7 +129,10 @@ def plot_learning_curves(results_path, out_dir, pdf_dir=None, variants=CLONING, 
     n_seeds = len({r["seed"] for r in runs})
     ax.set_title(f"{problem.TITLE}, guided by {lines[demo]} ({n_seeds} seed{'s' * (n_seeds > 1)}, mean ± std)",
                  color=INK, loc="left", fontsize=16)
-    ax.legend(loc="upper right", ncol=2, frameon=False, fontsize=12)
+    if outside:
+        ax.legend(loc="center left", bbox_to_anchor=(1.01, 0.5), frameon=False, fontsize=12)
+    else:
+        ax.legend(loc="upper right", ncol=2, frameon=False, fontsize=12)
     fig.tight_layout()
     fig.savefig(Path(pdf_dir or out_dir) / f"{name}.pdf")
     fig.savefig(Path(out_dir) / f"{name}.png", dpi=200)
@@ -121,9 +162,9 @@ def plot_overview(results_dir):
     paths = sorted(p for p in Path(results_dir).glob("*/*/results.json") if "quick" not in p.parts)
     exps = [json.loads(p.read_text()) for p in paths]
     order = list(STYLE)[::-1]   # first variant on top
-    width = 3.2 * len(exps) + 2.6
-    fig, axes = plt.subplots(1, len(exps), figsize=(width, 5.6), sharey=True)
-    fig.subplots_adjust(left=2.6 / width, right=0.99, top=0.80, bottom=0.12, wspace=0.12)
+    width = 3.2 * len(exps) + 4.8
+    fig, axes = plt.subplots(1, len(exps), figsize=(width, 0.3 * len(STYLE) + 1.6), sharey=True)
+    fig.subplots_adjust(left=4.8 / width, right=0.99, top=0.80, bottom=0.12, wspace=0.12)
     axes = np.atleast_1d(axes)
     table = {}
     for ax, data in zip(axes, exps):
@@ -150,6 +191,7 @@ def plot_overview(results_dir):
                 ax.errorbar(m, i, xerr=sd, fmt="o", ms=8, color=ACCENT, mec="white", mew=2,
                             ecolor=ACCENT, elinewidth=1.5, capsize=0)
         xs = [m - sd for m, sd, _ in rows.values()] + [m + sd for m, sd, _ in rows.values()] + [0] + list(refs.values())
+        xs = np.clip(xs, -100, 100)   # an unstable method (Jump-Start RL, +270%) would squash the panel
         pad = 0.12 * (max(xs) - min(xs))
         ax.set_xlim(max(min(xs) - pad, -100), max(xs) + pad)
         ax.set_title(name, color=INK, loc="left", fontsize=12)
@@ -183,5 +225,9 @@ if __name__ == "__main__":
         out = Path(path).parent
         plot_learning_curves(path, out, variants=CLONING)
         plot_learning_curves(path, out, variants=GUIDED, name="learning_curves_guided")
+        plot_learning_curves(path, out, variants=ONLINE, name="learning_curves_online")
+        plot_learning_curves(path, out, variants=CRAFTER, name="learning_curves_crafter")
+        plot_learning_curves(path, out, variants=FADE, name="learning_curves_fade")
+        plot_learning_curves(path, out, variants=RELEASE, name="learning_curves_release")
     if not sys.argv[1:]:
         plot_overview(Path(__file__).resolve().parent / "results")

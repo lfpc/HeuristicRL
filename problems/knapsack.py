@@ -31,6 +31,7 @@ class Config:
 class KnapsackEnv:
     n_actions = 2   # 0 = reject, 1 = accept
     obs_dim = 6
+    STATE = ("w", "v", "cap", "value", "ub")   # per-env arrays
 
     def __init__(self, cfg, n_envs, seed=0):
         self.cfg, self.n_envs, self.T = cfg, n_envs, cfg.episode_length
@@ -46,6 +47,12 @@ class KnapsackEnv:
         self.value = np.zeros(self.n_envs)
         self.ub = fractional_optimum(self.w, self.v, c.capacity)
         return self._obs(), self.action_mask()
+
+    def resample_future(self):
+        """Redraw the items not yet revealed (all after the current one)."""
+        c, shape = self.cfg, (self.n_envs, self.T - self.t - 1)
+        self.w[:, self.t + 1:] = self.rng.integers(1, c.max_weight + 1, size=shape)
+        self.v[:, self.t + 1:] = self.rng.integers(1, c.max_value + 1, size=shape)
 
     @property
     def item(self):

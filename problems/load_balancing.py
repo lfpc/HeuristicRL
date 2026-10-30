@@ -27,6 +27,7 @@ class Config:
 
 
 class LoadBalancingEnv:
+    STATE = ("size", "gap", "work", "total")   # per-env arrays
 
     def __init__(self, cfg, n_envs, seed=0):
         self.cfg, self.n_envs, self.T = cfg, n_envs, cfg.episode_length
@@ -45,6 +46,13 @@ class LoadBalancingEnv:
         self.t = 0
         self.total = np.zeros(self.n_envs)
         return self._obs(), self.action_mask()
+
+    def resample_future(self):
+        """Redraw what is not yet revealed: later job sizes and every inter-arrival time
+        from the current job on (the next arrival is unknown at dispatch)."""
+        rate = self.cfg.load * self.speeds.sum()
+        self.size[:, self.t + 1:] = self.rng.exponential(1.0, size=(self.n_envs, self.T - self.t - 1))
+        self.gap[:, self.t:] = self.rng.exponential(1.0 / rate, size=(self.n_envs, self.T - self.t))
 
     @property
     def job(self):

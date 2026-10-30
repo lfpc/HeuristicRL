@@ -1,0 +1,343 @@
+                 best_fit: 9.681
+           sum_of_squares: 2.357
+              eoh_evolved: 11.476
+                   random: 13.559
+Reusing 55 runs from /disk/users/lprate/projects/HeuristicRL/results/binpack/sum_of_squares/results.json
+Training 135 runs on 14 workers ...
+          scratch seed 7: final 0.0319
+          scratch seed 8: final 0.0171
+           bc_ppo seed 9: final 0.0203
+          scratch seed 9: final 0.0830
+          scratch seed 5: final 0.0220
+          scratch seed 6: final 0.0230
+           bc_ppo seed 8: final 0.0203
+           bc_ppo seed 7: final 0.0219
+           bc_ppo seed 6: final 0.0125
+           bc_ppo seed 5: final 0.0190
+        bc_ppo_kl seed 8: final 0.0125
+        bc_ppo_kl seed 5: final 0.0176
+        bc_ppo_kl seed 6: final 0.0168
+        bc_ppo_kl seed 7: final 0.0179
+   bc_ppo_kl_fast seed 8: final 0.0177
+   bc_ppo_kl_fast seed 7: final 0.0125
+        bc_ppo_kl seed 9: final 0.0172
+   bc_ppo_kl_fast seed 6: final 0.0177
+       dagger_ppo seed 5: final 0.0182
+   bc_ppo_kl_fast seed 5: final 0.0193
+   bc_ppo_kl_fast seed 9: final 0.0211
+       dagger_ppo seed 9: final 0.0180
+       dagger_ppo seed 8: final 0.0268
+       dagger_ppo seed 6: final 0.0180
+       dagger_ppo seed 7: final 0.0180
+    dagger_ppo_kl seed 6: final 0.0162
+    dagger_ppo_kl seed 5: final 0.0159
+    dagger_ppo_kl seed 7: final 0.0182
+             hurl seed 5: final 0.0178
+             hurl seed 7: final 0.0220
+    dagger_ppo_kl seed 9: final 0.0170
+             hurl seed 6: final 0.0259
+    dagger_ppo_kl seed 8: final 0.0201
+             hurl seed 8: final 0.0222
+             hurl seed 9: final 0.0446
+          bc_hurl seed 6: final 0.0281
+          bc_hurl seed 5: final 0.0174
+          bc_hurl seed 7: final 0.0245
+          bc_hurl seed 9: final 0.0185
+          bc_hurl seed 8: final 0.0264
+             hepo seed 5: final 0.0236
+             hepo seed 6: final 0.0246
+             hepo seed 7: final 0.0236
+             hepo seed 8: final 0.0243
+       iql_ppo_kl seed 8: final 0.0167
+             hepo seed 9: final 0.0239
+       iql_ppo_kl seed 5: final 0.0177
+      hubl_ppo_kl seed 5: final 0.0167
+       iql_ppo_kl seed 6: final 0.0164
+       iql_ppo_kl seed 7: final 0.0190
+       iql_ppo_kl seed 9: final 0.0125
+      hubl_ppo_kl seed 6: final 0.0161
+      hubl_ppo_kl seed 7: final 0.0165
+      hubl_ppo_kl seed 8: final 0.0171
+        kickstart seed 0: final 0.0195
+      hubl_ppo_kl seed 9: final 0.0125
+        kickstart seed 1: final 0.0180
+        kickstart seed 2: final 0.0125
+        kickstart seed 4: final 0.0125
+        kickstart seed 3: final 0.0125
+        kickstart seed 5: final 0.0176
+        kickstart seed 6: final 0.0125
+        kickstart seed 7: final 0.0125
+        kickstart seed 9: final 0.0125
+        kickstart seed 8: final 0.0125
+        bc_anchor seed 0: final 0.0223
+        bc_anchor seed 1: final 0.0186
+        bc_anchor seed 2: final 0.0233
+        bc_anchor seed 3: final 0.0230
+    bc_anchor_big seed 0: final 0.0229
+        bc_anchor seed 4: final 0.0206
+    bc_anchor_big seed 2: final 0.0197
+    bc_anchor_big seed 1: final 0.0190
+    bc_anchor_big seed 3: final 0.0215
+    bc_anchor_big seed 4: final 0.0228
+    bc_anchor_big seed 5: final 0.0202
+        bc_anchor seed 5: final 0.0215
+    bc_anchor_big seed 6: final 0.0184
+        bc_anchor seed 6: final 0.0190
+        bc_anchor seed 8: final 0.0248
+        bc_anchor seed 7: final 0.0250
+        bc_anchor seed 9: final 0.0240
+    bc_anchor_big seed 7: final 0.0179
+    bc_anchor_big seed 9: final 0.0180
+    bc_anchor_big seed 8: final 0.0242
+         residual seed 0: final 0.0193
+         residual seed 1: final 0.0226
+         residual seed 2: final 0.0308
+         residual seed 3: final 0.0225
+      hubl_anchor seed 0: final 0.0206
+      hubl_anchor seed 3: final 0.0221
+      hubl_anchor seed 4: final 0.0198
+      hubl_anchor seed 2: final 0.0204
+      hubl_anchor seed 1: final 0.0181
+      hubl_anchor seed 5: final 0.0195
+      hubl_anchor seed 6: final 0.0180
+      hubl_anchor seed 8: final 0.0223
+      hubl_anchor seed 7: final 0.0189
+      hubl_anchor seed 9: final 0.0213
+         residual seed 4: final 0.0233
+         residual seed 5: final 0.0280
+         residual seed 6: final 0.0306
+         residual seed 7: final 0.0293
+             jsrl seed 0: final 0.0457
+             jsrl seed 2: final 0.0521
+             jsrl seed 1: final 0.0338
+             jsrl seed 3: final 0.0584
+         residual seed 8: final 0.0279
+         residual seed 9: final 0.0202
+             jsrl seed 4: final 0.0565
+             jsrl seed 5: final 0.0610
+             jsrl seed 6: final 0.1707
+             jsrl seed 7: final 0.1706
+             jsrl seed 8: final 0.0440
+             jsrl seed 9: final 0.1706
+  rollout_dagger_kl seed 0: final 0.0125
+  rollout_dagger_kl seed 1: final 0.0147
+  rollout_dagger_kl seed 7: final 0.0179
+  rollout_dagger_kl seed 2: final 0.0167
+  rollout_dagger_kl seed 9: final 0.0176
+  rollout_dagger_kl seed 8: final 0.0182
+  rollout_dagger_kl seed 3: final 0.0159
+  rollout_dagger_kl seed 5: final 0.0159
+  rollout_dagger_kl seed 4: final 0.0172
+  rollout_dagger_kl seed 6: final 0.0125
+  rollout_dagger_held seed 1: final 0.0194
+  rollout_dagger_held seed 0: final 0.0203
+  rollout_dagger_held seed 3: final 0.0222
+  rollout_dagger_held seed 2: final 0.0204
+  rollout_dagger_held seed 5: final 0.0191
+  rollout_dagger_held seed 4: final 0.0178
+  rollout_dagger_held seed 6: final 0.0189
+  rollout_dagger_held seed 7: final 0.0201
+  rollout_dagger_held seed 8: final 0.0201
+  rollout_dagger_held seed 9: final 0.0181
+{'Best Fit': [10, 10, 10, 11, 10, 11, 10, 12, 10, 6], 'Sum of Squares': [10, 11, 12, 12, 12, 12, 12, 7, 12]}
+# Online bin packing: guided by Sum of Squares
+
+Wasted bin capacity (%) (lower is better), greedy policies on 256 fixed episodes
+(B = 12, item sizes {3, 4}, p = {2/3, 1/3}, 200 items).
+
+| Heuristic | Metric |
+|---|---|
+| Best Fit | 9.68% ± 0.99 |
+| Sum of Squares (guide) | 2.36% ± 0.66 |
+| EoH-evolved | 11.48% ± 1.67 |
+| Random | 13.56% ± 2.70 |
+
+| Variant | Initial | Final | Worst during training | Steps to beat Sum of Squares (median) | Seeds beating Sum of Squares |
+|---|---|---|---|---|---|
+| PPO from scratch | 55.49% | 3.59% ± 2.14 | 15.67% | 1372 k | 6/10 |
+| BC → PPO (naive) | 2.47% | 1.89% ± 0.25 | 4.32% | 23 k | 10/10 |
+| BC → PPO + KL (decay 50%) | 2.47% | 1.72% ± 0.17 | 2.83% | 33 k | 10/10 |
+| BC → PPO + KL (decay 20%) | 2.47% | 1.76% ± 0.21 | 3.26% | 33 k | 10/10 |
+| DAgger → PPO (naive) | 2.49% | 1.94% ± 0.27 | 5.12% | 44 k | 10/10 |
+| DAgger → PPO + KL (decay 50%) | 2.49% | 1.69% ± 0.13 | 2.64% | 525 k | 10/10 |
+| HuRL (from scratch) | 55.49% | 2.41% ± 0.72 | 15.41% | 1180 k | 9/10 |
+| BC → HuRL | 2.47% | 2.22% ± 0.33 | 6.38% | 23 k | 10/10 |
+| HEPO (from scratch) | 55.49% | 2.39% ± 0.05 | 15.71% | 41 k | 10/10 |
+| IQL → PPO + KL | 2.43% | 1.68% ± 0.16 | 2.77% | 136 k | 10/10 |
+| IQL + HUBL → PPO + KL | 2.45% | 1.51% ± 0.18 | 3.45% | 54 k | 10/10 |
+| Kickstarting (from scratch) | 55.49% | 1.43% ± 0.27 | 4.79% | 819 k | 10/10 |
+| BC → PPO + heuristic anchor | 2.47% | 2.22% ± 0.21 | 4.18% | 320 k | 10/10 |
+| BC → PPO + heuristic anchor, 4× batch | 2.47% | 2.05% ± 0.22 | 3.91% | 13 k | 9/10 |
+| IQL + HUBL → PPO + heuristic anchor | 2.44% | 2.01% ± 0.14 | 7.56% | 617 k | 10/10 |
+| Residual policy on heuristic | 2.46% | 2.55% ± 0.41 | 12.56% | 840 k | 5/10 |
+| Jump-Start RL | 55.49% | 8.63% ± 5.57 | 46.39% | never | 0/10 |
+| Rollout-DAgger → PPO + KL | 2.50% | 1.59% ± 0.20 | 2.63% | 125 k | 10/10 |
+| Rollout-DAgger → PPO + held KL | 2.50% | 1.96% ± 0.12 | 3.28% | 340 k | 10/10 |
+
+Variants that use Sum of Squares offline (BC, DAgger, HuRL's h, IQL/HUBL data) include its 12,800 steps in their step counts; HEPO's heuristic rollouts are half of its PPO steps. 'Beat' is measured on the 64 evaluation episodes of the learning curves.
+
+                 best_fit: 9.681
+           sum_of_squares: 2.357
+              eoh_evolved: 11.476
+                   random: 13.559
+Reusing 190 runs from /disk/users/lprate/projects/HeuristicRL/results/binpack/sum_of_squares/results.json
+Training 20 runs on 10 workers ...
+       iql_online seed 3: final 0.0215
+       iql_online seed 2: final 0.0233
+       iql_online seed 6: final 0.0236
+       iql_online seed 5: final 0.0236
+       iql_online seed 7: final 0.0236
+       iql_online seed 4: final 0.0235
+       iql_online seed 9: final 0.0236
+       iql_online seed 1: final 0.0236
+       iql_online seed 8: final 0.0236
+       iql_online seed 0: final 0.0238
+             dqfd seed 4: final 0.0240
+             dqfd seed 0: final 0.0236
+             dqfd seed 7: final 0.0236
+             dqfd seed 1: final 0.0236
+             dqfd seed 6: final 0.0236
+             dqfd seed 5: final 0.0236
+             dqfd seed 3: final 0.0245
+             dqfd seed 2: final 0.0236
+             dqfd seed 8: final 0.0236
+             dqfd seed 9: final 0.0236
+{'Best Fit': [10, 10, 10, 11, 10, 11, 10, 12, 10, 6], 'Sum of Squares': [10, 11, 12, 12, 12, 12, 12, 7, 12]}
+# Online bin packing: guided by Sum of Squares
+
+Wasted bin capacity (%) (lower is better), greedy policies on 256 fixed episodes
+(B = 12, item sizes {3, 4}, p = {2/3, 1/3}, 200 items).
+
+| Heuristic | Metric |
+|---|---|
+| Best Fit | 9.68% ± 0.99 |
+| Sum of Squares (guide) | 2.36% ± 0.66 |
+| EoH-evolved | 11.48% ± 1.67 |
+| Random | 13.56% ± 2.70 |
+
+| Variant | Initial | Final | Worst during training | Steps to beat Sum of Squares (median) | Seeds beating Sum of Squares |
+|---|---|---|---|---|---|
+| PPO from scratch | 55.49% | 3.59% ± 2.14 | 15.67% | 1372 k | 6/10 |
+| BC → PPO (naive) | 2.47% | 1.89% ± 0.25 | 4.32% | 23 k | 10/10 |
+| BC → PPO + KL (decay 50%) | 2.47% | 1.72% ± 0.17 | 2.83% | 33 k | 10/10 |
+| BC → PPO + KL (decay 20%) | 2.47% | 1.76% ± 0.21 | 3.26% | 33 k | 10/10 |
+| DAgger → PPO (naive) | 2.49% | 1.94% ± 0.27 | 5.12% | 44 k | 10/10 |
+| DAgger → PPO + KL (decay 50%) | 2.49% | 1.69% ± 0.13 | 2.64% | 525 k | 10/10 |
+| HuRL (from scratch) | 55.49% | 2.41% ± 0.72 | 15.41% | 1180 k | 9/10 |
+| BC → HuRL | 2.47% | 2.22% ± 0.33 | 6.38% | 23 k | 10/10 |
+| HEPO (from scratch) | 55.49% | 2.39% ± 0.05 | 15.71% | 41 k | 10/10 |
+| IQL → PPO + KL | 2.43% | 1.68% ± 0.16 | 2.77% | 136 k | 10/10 |
+| IQL + HUBL → PPO + KL | 2.45% | 1.51% ± 0.18 | 3.45% | 54 k | 10/10 |
+| Kickstarting (from scratch) | 55.49% | 1.43% ± 0.27 | 4.79% | 819 k | 10/10 |
+| BC → PPO + heuristic anchor | 2.47% | 2.22% ± 0.21 | 4.18% | 320 k | 10/10 |
+| BC → PPO + heuristic anchor, 4× batch | 2.47% | 2.05% ± 0.22 | 3.91% | 13 k | 9/10 |
+| IQL + HUBL → PPO + heuristic anchor | 2.44% | 2.01% ± 0.14 | 7.56% | 617 k | 10/10 |
+| Residual policy on heuristic | 2.46% | 2.55% ± 0.41 | 12.56% | 840 k | 5/10 |
+| Jump-Start RL | 55.49% | 8.63% ± 5.57 | 46.39% | never | 0/10 |
+| Rollout-DAgger → PPO + KL | 2.50% | 1.59% ± 0.20 | 2.63% | 125 k | 10/10 |
+| Rollout-DAgger → PPO + held KL | 2.50% | 1.96% ± 0.12 | 3.28% | 340 k | 10/10 |
+| IQL offline → online | 2.45% | 2.34% ± 0.06 | 2.48% | 33 k | 7/10 |
+| DQfD | 2.46% | 2.37% ± 0.03 | 2.46% | never | 0/10 |
+
+Variants that use Sum of Squares offline (BC, DAgger, HuRL's h, IQL/HUBL data) include its 12,800 steps in their step counts; HEPO's heuristic rollouts are half of its PPO steps. 'Beat' is measured on the 64 evaluation episodes of the learning curves.
+
+                 best_fit: 9.681
+           sum_of_squares: 2.357
+              eoh_evolved: 11.476
+                   random: 13.559
+Reusing 210 runs from /disk/users/lprate/projects/HeuristicRL/results/binpack/sum_of_squares/results.json
+Training 50 runs on 12 workers ...
+  crafter_imitate seed 2: final 0.0174
+  crafter_imitate seed 1: final 0.0175
+  crafter_imitate seed 4: final 0.0200
+  crafter_imitate seed 8: final 0.0185
+  crafter_imitate seed 7: final 0.0176
+  crafter_imitate seed 0: final 0.0177
+  crafter_imitate_c01 seed 0: final 0.0213
+  crafter_imitate seed 5: final 0.0197
+  crafter_imitate seed 3: final 0.0189
+  crafter_imitate seed 9: final 0.0191
+  crafter_imitate seed 6: final 0.0201
+  crafter_imitate_c01 seed 1: final 0.0194
+  crafter_imitate_c01 seed 3: final 0.0218
+  crafter_imitate_c01 seed 5: final 0.0197
+  crafter_imitate_c01 seed 2: final 0.0248
+  crafter_residual_b2 seed 0: final 0.0229
+  crafter_imitate_c01 seed 4: final 0.0202
+  crafter_imitate_c01 seed 6: final 0.0226
+  crafter_imitate_c01 seed 9: final 0.0199
+  crafter_residual_b2 seed 2: final 0.0189
+  crafter_imitate_c01 seed 8: final 0.0208
+  crafter_residual_b2 seed 3: final 0.0201
+  crafter_residual_b2 seed 1: final 0.0163
+  crafter_imitate_c01 seed 7: final 0.0231
+  crafter_residual_b2 seed 4: final 0.0232
+  crafter_residual_b2 seed 5: final 0.0234
+  crafter_residual_b2 seed 6: final 0.0125
+  crafter_residual_b4 seed 0: final 0.0215
+  crafter_residual_b2 seed 7: final 0.0223
+  crafter_residual_b2 seed 9: final 0.0238
+  crafter_residual_b2 seed 8: final 0.0267
+  crafter_residual_b4 seed 2: final 0.0234
+  crafter_residual_b4 seed 5: final 0.0198
+  crafter_residual_b4 seed 3: final 0.0220
+  crafter_residual_b4 seed 1: final 0.0208
+  crafter_residual_b4 seed 4: final 0.0185
+  crafter_residual_b4 seed 6: final 0.0220
+  crafter_residual_b4 seed 7: final 0.0237
+  crafter_residual_b4 seed 9: final 0.0261
+  crafter_residual_b4 seed 8: final 0.0255
+  crafter_residual_b8 seed 0: final 0.0240
+  crafter_residual_b8 seed 3: final 0.0265
+  crafter_residual_b8 seed 1: final 0.0297
+  crafter_residual_b8 seed 2: final 0.0264
+  crafter_residual_b8 seed 4: final 0.0265
+  crafter_residual_b8 seed 5: final 0.0316
+  crafter_residual_b8 seed 6: final 0.0272
+  crafter_residual_b8 seed 7: final 0.0212
+  crafter_residual_b8 seed 9: final 0.0289
+  crafter_residual_b8 seed 8: final 0.0270
+{'Best Fit': [10, 10, 10, 11, 10, 11, 10, 12, 10, 6], 'Sum of Squares': [10, 11, 12, 12, 12, 12, 12, 7, 12]}
+# Online bin packing: guided by Sum of Squares
+
+Wasted bin capacity (%) (lower is better), greedy policies on 256 fixed episodes
+(B = 12, item sizes {3, 4}, p = {2/3, 1/3}, 200 items).
+
+| Heuristic | Metric |
+|---|---|
+| Best Fit | 9.68% ± 0.99 |
+| Sum of Squares (guide) | 2.36% ± 0.66 |
+| EoH-evolved | 11.48% ± 1.67 |
+| Random | 13.56% ± 2.70 |
+
+| Variant | Initial | Final | Worst during training | Steps to beat Sum of Squares (median) | Seeds beating Sum of Squares |
+|---|---|---|---|---|---|
+| PPO from scratch | 55.49% | 3.59% ± 2.14 | 15.67% | 1372 k | 6/10 |
+| BC → PPO (naive) | 2.47% | 1.89% ± 0.25 | 4.32% | 23 k | 10/10 |
+| BC → PPO + KL (decay 50%) | 2.47% | 1.72% ± 0.17 | 2.83% | 33 k | 10/10 |
+| BC → PPO + KL (decay 20%) | 2.47% | 1.76% ± 0.21 | 3.26% | 33 k | 10/10 |
+| DAgger → PPO (naive) | 2.49% | 1.94% ± 0.27 | 5.12% | 44 k | 10/10 |
+| DAgger → PPO + KL (decay 50%) | 2.49% | 1.69% ± 0.13 | 2.64% | 525 k | 10/10 |
+| HuRL (from scratch) | 55.49% | 2.41% ± 0.72 | 15.41% | 1180 k | 9/10 |
+| BC → HuRL | 2.47% | 2.22% ± 0.33 | 6.38% | 23 k | 10/10 |
+| HEPO (from scratch) | 55.49% | 2.39% ± 0.05 | 15.71% | 41 k | 10/10 |
+| IQL → PPO + KL | 2.43% | 1.68% ± 0.16 | 2.77% | 136 k | 10/10 |
+| IQL + HUBL → PPO + KL | 2.45% | 1.51% ± 0.18 | 3.45% | 54 k | 10/10 |
+| Kickstarting (from scratch) | 55.49% | 1.43% ± 0.27 | 4.79% | 819 k | 10/10 |
+| BC → PPO + heuristic anchor | 2.47% | 2.22% ± 0.21 | 4.18% | 320 k | 10/10 |
+| BC → PPO + heuristic anchor, 4× batch | 2.47% | 2.05% ± 0.22 | 3.91% | 13 k | 9/10 |
+| IQL + HUBL → PPO + heuristic anchor | 2.44% | 2.01% ± 0.14 | 7.56% | 617 k | 10/10 |
+| Residual policy on heuristic | 2.46% | 2.55% ± 0.41 | 12.56% | 840 k | 5/10 |
+| Jump-Start RL | 55.49% | 8.63% ± 5.57 | 46.39% | never | 0/10 |
+| Rollout-DAgger → PPO + KL | 2.50% | 1.59% ± 0.20 | 2.63% | 125 k | 10/10 |
+| Rollout-DAgger → PPO + held KL | 2.50% | 1.96% ± 0.12 | 3.28% | 340 k | 10/10 |
+| IQL offline → online | 2.45% | 2.34% ± 0.06 | 2.48% | 33 k | 7/10 |
+| DQfD | 2.46% | 2.37% ± 0.03 | 2.46% | never | 0/10 |
+| Imitation, annealed by 25% (Crafter) | 55.49% | 1.86% ± 0.10 | 5.50% | 625 k | 10/10 |
+| Imitation, constant 0.1 (Crafter) | 55.49% | 2.14% ± 0.16 | 17.01% | 829 k | 10/10 |
+| Residual prior β = 2 (Crafter) | 2.46% | 2.10% ± 0.39 | 10.17% | 829 k | 10/10 |
+| Residual prior β = 4 (Crafter) | 2.46% | 2.23% ± 0.23 | 9.61% | 1075 k | 10/10 |
+| Residual prior β = 8 (Crafter) | 2.46% | 2.69% ± 0.27 | 6.68% | 1167 k | 4/10 |
+
+Variants that use Sum of Squares offline (BC, DAgger, HuRL's h, IQL/HUBL data) include its 12,800 steps in their step counts; HEPO's heuristic rollouts are half of its PPO steps. 'Beat' is measured on the 64 evaluation episodes of the learning curves.
+

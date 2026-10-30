@@ -33,6 +33,7 @@ class Config:
 
 
 class InventoryEnv:
+    STATE = ("demand", "on_hand", "pipeline", "cost")   # per-env arrays
 
     def __init__(self, cfg, n_envs, seed=0):
         self.cfg, self.n_envs, self.T = cfg, n_envs, cfg.episode_length
@@ -49,6 +50,10 @@ class InventoryEnv:
         self.t = 0
         self.cost = np.zeros(self.n_envs)
         return self._obs(), self.action_mask()
+
+    def resample_future(self):
+        """Redraw demand from this period on (unknown when the order is placed)."""
+        self.demand[:, self.t:] = self.rng.poisson(self.cfg.demand_mean, size=(self.n_envs, self.T - self.t))
 
     @property
     def position(self):

@@ -1,0 +1,44 @@
+[
+ {
+  "experiment": "binpack/best_fit",
+  "name": "Bin packing, Best Fit",
+  "lasting_better_until": 409600,
+  "censored": false,
+  "scratch_beats_guide": 634880.0
+ },
+ {
+  "experiment": "binpack/sum_of_squares",
+  "name": "Bin packing, Sum of Squares",
+  "lasting_better_until": 1532736,
+  "censored": true,
+  "scratch_beats_guide": 1372160.0
+ },
+ {
+  "experiment": "binpack/eoh_evolved",
+  "name": "Bin packing, EoH",
+  "lasting_better_until": 20480,
+  "censored": false,
+  "scratch_beats_guide": 20480.0
+ },
+ {
+  "experiment": "knapsack/static_threshold",
+  "name": "Knapsack",
+  "lasting_better_until": 266240,
+  "censored": false,
+  "scratch_beats_guide": 245760.0
+ },
+ {
+  "experiment": "load_balancing/shortest_expected_delay",
+  "name": "Load balancing",
+  "lasting_better_until": 225280,
+  "censored": false,
+  "scratch_beats_guide": 174080.0
+ },
+ {
+  "experiment": "inventory/base_stock",
+  "name": "Inventory",
+  "lasting_better_until": 272640,
+  "censored": false,
+  "scratch_beats_guide": 133120.0
+ }
+]
