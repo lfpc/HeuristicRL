@@ -15,3 +15,10 @@ report/*.out
 report/*.fls
 report/*.fdb_latexmk
 report/*.synctex.gz
+
+# raw run data (kept locally; regenerate with run_experiments.py): only code, figures and the report are tracked
+results/**/results.json
+results/**/run.log
+results/regime.json
+results/rollout_reference.json
+results/quick/
